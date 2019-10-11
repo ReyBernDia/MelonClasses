@@ -4,12 +4,21 @@ class AbstracMelonOrder():
         self.species = species
         self.qty = qty
         self.shipped = False
+        self.country_code = country_code
 
     def get_total(self):
         """Calculate price, including tax."""
 
         base_price = 5
-        total = (1 + self.tax) * self.qty * base_price
+        international_fee = 0 
+
+        if self.species == 'Christmas melon':
+            base_price = base_price * 1.5 
+        
+        if self.country_code and self.qty < 10 :
+            international_fee = 3 
+
+        total = (1 + self.tax) * self.qty * base_price + international_fee
 
         return total
 
