@@ -1,9 +1,14 @@
 """Classes for melon orders."""
-class AbstracMelonOrder():
-    def __init__(self, species, qty, country_code=None):
+class AbstractMelonOrder():
+    """Abstract class to hold shared attributes and functions for inheritance
+    """
+
+    def __init__(self, species, qty, order_type, tax, country_code = None):
         self.species = species
         self.qty = qty
         self.shipped = False
+        self.order_type = order_type
+        self.tax = tax
         self.country_code = country_code
 
     def get_total(self):
@@ -28,28 +33,40 @@ class AbstracMelonOrder():
         self.shipped = True
 
 
-class DomesticMelonOrder(AbstracMelonOrder):
+class DomesticMelonOrder(AbstractMelonOrder):
     """A melon order within the USA."""
 
     def __init__(self, species, qty):
-        super().__init__(species, qty)
+        super().__init__(species, qty, 'domestic', 0.08)
         """Initialize melon order attributes."""
 
-        self.order_type = "domestic"
-        self.tax = 0.08
 
 
-class InternationalMelonOrder(AbstracMelonOrder):
+class InternationalMelonOrder(AbstractMelonOrder):
     """An international (non-US) melon order."""
 
     def __init__(self, species, qty, country_code):
-        super().__init__(species, qty)
+        super().__init__(species, qty, 'international', 0.17)
         """Initialize melon order attributes."""
+
         self.country_code = country_code
-        self.order_type = "international"
-        self.tax = 0.17
 
     def get_country_code(self):
         """Return the country code."""
 
         return self.country_code
+
+
+class GovernmentMelonOrder(AbstractMelonOrder):
+    """A government melon order. Not taxed, requires inspection. """
+
+    def __init__(self, species, qty):
+        super().__init__(species, qty, 'government', 0)
+        """Initialize melon order attributes."""
+
+        self.passed_inspection = False
+
+    def mark_inspection(self, passed):
+        """Updates inspection status"""
+
+        self.passed_inspection = passed
