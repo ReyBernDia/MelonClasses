@@ -1,20 +1,29 @@
+from random import randint
+
 """Classes for melon orders."""
 class AbstractMelonOrder():
     """Abstract class to hold shared attributes and functions for inheritance
     """
 
     def __init__(self, species, qty, order_type, tax, country_code = None):
+        
+        def get_base_price(self):
+
+            return randint(5, 10)
+
         self.species = species
         self.qty = qty
         self.shipped = False
         self.order_type = order_type
         self.tax = tax
         self.country_code = country_code
+        self.base_price = get_base_price(self)
+
 
     def get_total(self):
         """Calculate price, including tax."""
 
-        base_price = 5
+        base_price = self.base_price
         international_fee = 0 
 
         if self.species == 'Christmas melon':
@@ -26,6 +35,8 @@ class AbstractMelonOrder():
         total = (1 + self.tax) * self.qty * base_price + international_fee
 
         return total
+    #take get_base_price in get_total 
+    #
 
     def mark_shipped(self):
         """Record the fact than an order has been shipped."""
